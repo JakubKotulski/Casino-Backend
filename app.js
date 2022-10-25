@@ -3,6 +3,8 @@ const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const { register } = require("./node/actions/register");
+
 mongoose.connect("mongodb+srv://praktyki:praktyki2021@development.wtktz.mongodb.net/casino", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -18,6 +20,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use("/register", register);
 
 app.listen(4000, () => {
   console.log("Server has started");
