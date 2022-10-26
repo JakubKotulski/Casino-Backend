@@ -22,7 +22,7 @@ const createUser = async (req, res) => {
 
     await newUser.save();
 
-    res.json({ message: "User Created" });
+    res.json({ message: "User Created", user: newUser });
     res.status(201);
   } catch (err) {
     console.log(err);
