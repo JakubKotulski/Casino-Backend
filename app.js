@@ -1,9 +1,15 @@
 const mongoose = require("mongoose");
 const cors = require("cors");
 const express = require("express");
+const session = require("express-session");
 const bodyParser = require("body-parser");
+const passport = require("passport");
+const passportLocal = require("passport-local").Strategy;
+const cookieParser = require("cookie-parser");
+const MongoStore = require("connect-mongo");
 
 const { createUser } = require("./node/actions/create-user");
+const { login } = require("./node/actions/login");
 
 mongoose.connect("mongodb+srv://praktyki:praktyki2021@development.wtktz.mongodb.net/casino", {
   useNewUrlParser: true,
@@ -21,7 +27,19 @@ app.use(
   })
 );
 
+app.use(session({
+      secret: "secretcode",
+      resave: true,
+      saveUninitialized: true,
+}));
+
+app.use(cookieParser("secretcode"));
+app.use(passport.initialize());
+app.use(passport.session());
+require("./node/passport-config")(passport);
+
 app.post("/user", createUser);
+app.post("/user/login", login);
 
 app.listen(4000, () => {
   console.log("Server has started");
