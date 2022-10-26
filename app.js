@@ -3,7 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const { register } = require("./node/actions/register");
+const { user } = require("./node/actions/user");
 
 mongoose.connect("mongodb+srv://praktyki:praktyki2021@development.wtktz.mongodb.net/casino", {
   useNewUrlParser: true,
@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.use("/register", register);
+app.post("/register", user);
 
 app.listen(4000, () => {
   console.log("Server has started");
