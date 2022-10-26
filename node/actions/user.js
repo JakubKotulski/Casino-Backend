@@ -25,7 +25,7 @@ const user = async (req, res) => {
     res.json({ message: "User Created" });
     res.status(201);
   } catch (err) {
-    throw err;
+    console.log(err);
   }
 };
 
