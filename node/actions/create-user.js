@@ -1,3 +1,4 @@
+const Balance = require("../models/accountBalance");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 
@@ -20,9 +21,14 @@ const createUser = async (req, res) => {
       age: req.body.age,
     });
 
-    await newUser.save();
+    const accountStartBalance = new Balance({
+      userID: newUser._id,
+    });
 
-    res.json({ message: "User Created", user: newUser });
+    await newUser.save();
+    await accountStartBalance.save();
+
+    res.json({ message: "User Created" });
     res.status(201);
   } catch (err) {
     console.log(err);

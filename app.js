@@ -9,7 +9,6 @@ const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 
 const { createUser } = require("./node/actions/create-user");
-const { startBalance } = require("./node/actions/start-balance");
 const { login } = require("./node/actions/login");
 
 mongoose.connect("mongodb+srv://praktyki:praktyki2021@development.wtktz.mongodb.net/casino", {
@@ -42,7 +41,6 @@ app.use(passport.session());
 require("./node/passport-config")(passport);
 
 app.post("/user", createUser);
-app.post("/user/balance", startBalance);
 app.post("/user/login", login);
 
 app.listen(4000, () => {
