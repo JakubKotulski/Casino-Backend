@@ -30,7 +30,8 @@ const passportConfig = (passport) => {
                 _id: user._id,
                 name: user.name,
                 surname: user.surname,
-                email: user.email
+                email: user.email,
+                avatar: user.avatar
             };
             cb(err, userInformation);
         });
