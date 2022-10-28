@@ -8,8 +8,11 @@ const passportLocal = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 
+
 const { createUser } = require("./node/actions/create-user");
 const { login } = require("./node/actions/login");
+const { getLogedUser } = require("./node/actions/getLogedUser")
+const { logout } = require("./node/actions/logout")
 
 mongoose.connect("mongodb+srv://praktyki:praktyki2021@development.wtktz.mongodb.net/casino", {
   useNewUrlParser: true,
@@ -32,6 +35,12 @@ app.use(
     secret: "secretcode",
     resave: true,
     saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://praktyki:praktyki2021@development.wtktz.mongodb.net/casino",
+      }),
+      ...(process.env.COOKIE_DOMAIN
+        ? { cookie: { domain: process.env.COOKIE_DOMAIN, httpOnly: false, sameSite: "None", secure: true } }
+        : {}),
   })
 );
 
@@ -42,6 +51,9 @@ require("./node/passport-config")(passport);
 
 app.post("/user", createUser);
 app.post("/user/login", login);
+app.get("/user/me", getLogedUser);
+
+app.post("/logout", logout);
 
 app.listen(4000, () => {
   console.log("Server has started");
