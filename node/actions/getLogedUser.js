@@ -1,5 +1,6 @@
 const getLogedUser = (req, res) => {
-    res.json(req.user);
-}
+  console.log(req.user)
+  res.json(req.user);
+};
 
-module.exports = { getLogedUser }
+module.exports = { getLogedUser };
