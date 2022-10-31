@@ -4,7 +4,7 @@ const playRoulette = async (req, res) => {
   try {
     const bet = parseInt(req.body.credits);
     const actuallBalance = await AccountBalance.findOne({ userID: req.body.id });
-    if (actuallBalance.state < bet || actuallBalance < 10) {
+    if (actuallBalance.state < bet) {
       const toSend = {
         message: "You don't have enough credits!",
         result: "",
