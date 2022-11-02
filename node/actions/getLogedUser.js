@@ -1,5 +1,13 @@
-const getLogedUser = (req, res) => {
-    res.json(req.user);
-}
+const AccountBalance = require("../models/accountBalance");
 
-module.exports = { getLogedUser }
+const getLogedUser = async (req, res) => {
+  try {
+    const balance = await AccountBalance.findOne({ userID: req.user._id });
+    res.status(200);
+    res.json(balance);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { getLogedUser };

@@ -1,8 +1,10 @@
 const logout = async (req, res, next) => {
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.json({});
-      });
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.json({});
+  });
 };
 
-module.exports = { logout }
+module.exports = { logout };
