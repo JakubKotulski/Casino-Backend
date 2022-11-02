@@ -3,7 +3,7 @@ const AccountBalance = require("../models/accountBalance");
 const playRoulette = async (req, res) => {
   try {
     const bet = parseInt(req.body.credits);
-    const actuallBalance = await AccountBalance.findOne({ userID: req.body.id });
+    const actuallBalance = await AccountBalance.findOne({ userID: req.user._id });
     if (actuallBalance.state < bet) {
       const toSend = {
         message: "You don't have enough credits!",
@@ -19,7 +19,7 @@ const playRoulette = async (req, res) => {
         result: result,
       };
       const newBalance = bet * 30 + actuallBalance.state;
-      await AccountBalance.updateOne({ userID: req.body.id }, { $set: { state: newBalance } });
+      await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
       res.send(toSend);
       return;
     }
@@ -28,7 +28,7 @@ const playRoulette = async (req, res) => {
       result: result,
     };
     const newBalance = actuallBalance.state - bet;
-    await AccountBalance.updateOne({ userID: req.body.id }, { state: newBalance });
+    await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
     res.send(toSend);
     return;
   } catch (err) {
