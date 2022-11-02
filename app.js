@@ -13,6 +13,7 @@ const { login } = require("./node/actions/login");
 const { getLogedUser } = require("./node/actions/getLogedUser");
 const { logout } = require("./node/actions/logout");
 
+const { playRoulette } = require("./node/actions/playRoulette");
 const { oneArmedBandit } = require("./node/actions/one-armed-bandit");
 
 mongoose.connect("mongodb+srv://praktyki:praktyki2021@development.wtktz.mongodb.net/casino", {
@@ -54,6 +55,7 @@ app.post("/user", createUser);
 app.post("/user/login", login);
 app.get("/user/me", getLogedUser);
 
+app.post("/game/roulette", playRoulette);
 app.post("/one-armed-bandit", oneArmedBandit);
 
 app.post("/logout", logout);
