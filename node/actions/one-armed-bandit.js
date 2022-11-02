@@ -13,7 +13,7 @@ const oneArmedBandit = async (req, res) => {
 
     if (balance.state <= 0 || balance.state < bet) {
       res.json({
-        message: "You don't have enought money to play",
+        message: "No money",
         rngs: { rng1: "0", rng2: "0", rng3: "0", balance: balance },
       });
     } else {
@@ -40,7 +40,7 @@ const oneArmedBandit = async (req, res) => {
 
         await AccountBalance.updateOne({ userID: req.body.id }, { state: newBalance });
 
-        res.json({ message: "You lose your bet", rngs: rngs, balance: newBalance });
+        res.json({ message: "You lose", rngs: rngs, balance: newBalance });
       }
     }
   } catch (err) {
