@@ -2,7 +2,6 @@ const AccountBalance = require("../models/accountBalance");
 
 const playRoulette = async (req, res) => {
   try {
-    console.log(req.body);
     const bet = parseInt(req.body.credits);
     const actuallBalance = await AccountBalance.findOne({ userID: req.user._id });
     if (actuallBalance.state < bet) {
@@ -15,9 +14,7 @@ const playRoulette = async (req, res) => {
     }
     const result = Math.floor(Math.random() * 36);
 
-    // Greater than 18
-
-    if (req.body.gt18) {
+    if (req.body.variant === "gt18") {
       if (result > 18) {
         const toSend = {
           message: "You have won your bet!",
@@ -38,9 +35,7 @@ const playRoulette = async (req, res) => {
       return;
     }
 
-    // Lesser than 19
-
-    if (req.body.lt19) {
+    if (req.body.variant === "lt19") {
       if (result < 19 && result != 0) {
         const toSend = {
           message: "You have won your bet!",
@@ -69,9 +64,7 @@ const playRoulette = async (req, res) => {
       return;
     }
 
-    // Red
-
-    if (req.body.red) {
+    if (req.body.variant === "red") {
       if (result % 2 == 1) {
         const toSend = {
           message: "You have won your bet!",
@@ -100,9 +93,7 @@ const playRoulette = async (req, res) => {
       return;
     }
 
-    // Black
-
-    if (req.body.black) {
+    if (req.body.variant === "black") {
       if (result % 2 == 0) {
         const toSend = {
           message: "You have won your bet!",
@@ -131,9 +122,7 @@ const playRoulette = async (req, res) => {
       return;
     }
 
-    // Odd
-
-    if (req.body.odd) {
+    if (req.bodyvariant === "odd") {
       if (result % 2 == 1) {
         const toSend = {
           message: "You have won your bet!",
@@ -162,9 +151,7 @@ const playRoulette = async (req, res) => {
       return;
     }
 
-    // Even
-
-    if (req.body.even) {
+    if (req.body.variant === "even") {
       if (result % 2 == 0) {
         const toSend = {
           message: "You have won your bet!",
@@ -193,26 +180,32 @@ const playRoulette = async (req, res) => {
       return;
     }
 
-    // Jedna liczba
+    if (req.body.variant === "luckyNumber") {
+      if (result === parseInt(req.body.number)) {
+        const toSend = {
+          message: "You have won your bet!",
+          result: result,
+        };
+        const newBalance = bet * 30 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
+        res.send(toSend);
+        return;
+      }
+      const toSend = {
+        message: "You have lost your bet!",
+        result: result,
+      };
+      const newBalance = actuallBalance.state - bet;
+      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
+      res.send(toSend);
+      return;
+    }
 
-    // if (result === parseInt(req.body.number)) {
-    //   const toSend = {
-    //     message: "You have won your bet!",
-    //     result: result,
-    //   };
-    //   const newBalance = bet * 30 + actuallBalance.state;
-    //   await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
-    //   res.send(toSend);
-    //   return;
-    // }
-    // const toSend = {
-    //   message: "You have lost your bet!",
-    //   result: result,
-    // };
-    // const newBalance = actuallBalance.state - bet;
-    // await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
-    // res.send(toSend);
-    // return;
+    const toSend = {
+      message: "Chose one variant of game",
+      result: "",
+    };
+    res.send(toSend);
   } catch (err) {
     console.log(err);
   }
