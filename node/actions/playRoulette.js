@@ -1,6 +1,6 @@
 const AccountBalance = require("../models/accountBalance");
 
-const playRoulette = async (req, res) => {
+const playRoulette = async (req, res) => { 
   try {
     const bet = parseInt(req.body.credits);
     const actuallBalance = await AccountBalance.findOne({ userID: req.user._id });
