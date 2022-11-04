@@ -16,33 +16,35 @@ const playRoulette = async (req, res) => {
 
     if (req.body.variant === "gt18") {
       if (result > 18) {
+        const newBalance = bet * 5 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         const toSend = {
           message: "You have won your bet!",
           result: result,
+          balance: newBalance,
         };
-        const newBalance = bet * 5 + actuallBalance.state;
-        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         res.send(toSend);
         return;
       }
+      const newBalance = actuallBalance.state - bet;
+      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       const toSend = {
         message: "You have lost your bet!",
         result: result,
+        balance: newBalance,
       };
-      const newBalance = actuallBalance.state - bet;
-      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       res.send(toSend);
       return;
     }
 
     if (req.body.variant === "lt19") {
       if (result < 19 && result != 0) {
+        const newBalance = bet * 5 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         const toSend = {
           message: "You have won your bet!",
           result: result,
         };
-        const newBalance = bet * 5 + actuallBalance.state;
-        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         res.send(toSend);
         return;
       }
@@ -54,24 +56,26 @@ const playRoulette = async (req, res) => {
         res.send(toSend);
         return;
       }
+      const newBalance = actuallBalance.state - bet;
+      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       const toSend = {
         message: "You have lost your bet!",
         result: result,
+        balance: newBalance,
       };
-      const newBalance = actuallBalance.state - bet;
-      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       res.send(toSend);
       return;
     }
 
     if (req.body.variant === "red") {
       if (result % 2 == 1) {
+        const newBalance = bet * 5 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         const toSend = {
           message: "You have won your bet!",
           result: result,
+          balance: newBalance,
         };
-        const newBalance = bet * 5 + actuallBalance.state;
-        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         res.send(toSend);
         return;
       }
@@ -83,24 +87,26 @@ const playRoulette = async (req, res) => {
         res.send(toSend);
         return;
       }
+      const newBalance = actuallBalance.state - bet;
+      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       const toSend = {
         message: "You have lost your bet!",
         result: result,
+        balance: newBalance,
       };
-      const newBalance = actuallBalance.state - bet;
-      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       res.send(toSend);
       return;
     }
 
     if (req.body.variant === "black") {
       if (result % 2 == 0) {
+        const newBalance = bet * 8 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         const toSend = {
           message: "You have won your bet!",
           result: result,
+          balance: newBalance,
         };
-        const newBalance = bet * 8 + actuallBalance.state;
-        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         res.send(toSend);
         return;
       }
@@ -112,24 +118,26 @@ const playRoulette = async (req, res) => {
         res.send(toSend);
         return;
       }
+      const newBalance = actuallBalance.state - bet;
+      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       const toSend = {
         message: "You have lost your bet!",
         result: result,
+        balance: newBalance,
       };
-      const newBalance = actuallBalance.state - bet;
-      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       res.send(toSend);
       return;
     }
 
     if (req.bodyvariant === "odd") {
       if (result % 2 == 1) {
+        const newBalance = bet * 8 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         const toSend = {
           message: "You have won your bet!",
           result: result,
+          balance: newBalance,
         };
-        const newBalance = bet * 8 + actuallBalance.state;
-        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         res.send(toSend);
         return;
       }
@@ -141,12 +149,13 @@ const playRoulette = async (req, res) => {
         res.send(toSend);
         return;
       }
+      const newBalance = actuallBalance.state - bet;
+      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       const toSend = {
         message: "You have lost your bet!",
         result: result,
+        balance: newBalance,
       };
-      const newBalance = actuallBalance.state - bet;
-      await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
       res.send(toSend);
       return;
     }
@@ -182,21 +191,23 @@ const playRoulette = async (req, res) => {
 
     if (req.body.variant === "luckyNumber") {
       if (result === parseInt(req.body.number)) {
+        const newBalance = bet * 30 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         const toSend = {
           message: "You have won your bet!",
           result: result,
+          balance: newBalance,
         };
-        const newBalance = bet * 30 + actuallBalance.state;
-        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         res.send(toSend);
         return;
       }
-      const toSend = {
-        message: "You have lost your bet!",
-        result: result,
-      };
       const newBalance = actuallBalance.state - bet;
       await AccountBalance.updateOne({ userID: req.user._id }, { state: newBalance });
+      const toSend = {
+        message: "You have won your bet!",
+        result: result,
+        balance: newBalance,
+      };
       res.send(toSend);
       return;
     }
