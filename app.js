@@ -13,6 +13,7 @@ const { login } = require("./node/actions/login");
 const { getLogedUser } = require("./node/actions/getLogedUser");
 const { changeUserPassword } = require("./node/actions/change-user-password");
 const { logout } = require("./node/actions/logout");
+const { addCredits } = require("./node/actions/addCredits");
 
 const { playRoulette } = require("./node/actions/playRoulette");
 const { oneArmedBandit } = require("./node/actions/one-armed-bandit");
@@ -56,6 +57,7 @@ app.post("/user", createUser);
 app.post("/user/login", login);
 app.get("/user/me", getLogedUser);
 app.post("/user/change-password", changeUserPassword);
+app.put("/user/credits", addCredits);
 
 app.post("/game/roulette", playRoulette);
 app.post("/one-armed-bandit", oneArmedBandit);
