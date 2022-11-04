@@ -162,12 +162,13 @@ const playRoulette = async (req, res) => {
 
     if (req.body.variant === "even") {
       if (result % 2 == 0) {
+        const newBalance = bet * 8 + actuallBalance.state;
+        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         const toSend = {
           message: "You have won your bet!",
           result: result,
+          balance: newBalance,
         };
-        const newBalance = bet * 8 + actuallBalance.state;
-        await AccountBalance.updateOne({ userID: req.user._id }, { $set: { state: newBalance } });
         res.send(toSend);
         return;
       }
